@@ -38,11 +38,11 @@
             </td>
             <td class="text-left">
                 <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
-            {% if question.answer_set|length > 0 %}
-            <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
-            {% endif %}
+                {% if question.answer_set|length > 0 %}
+                <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
+                {% endif %}
             </td>
-            <td>{{ question.user.username}}</td>
+            <td>{{ question.user.username }}</td>  <!-- 글쓴이 추가 -->
             <td>{{ question.create_date|datetime }}</td>
         </tr>
         {% endfor %}
@@ -96,7 +96,7 @@
     <!-- 페이징처리 끝 -->
     <a href="{{ url_for('question.create') }}" class="btn btn-primary">질문 등록하기</a>
 </div>
-<form id="searchForm" method="GET" action="{{ url_for('question._list') }}">
+<form id="searchForm" method="get" action="{{ url_for('question._list') }}">
     <input type="hidden" id="kw" name="kw" value="{{ kw or '' }}">
     <input type="hidden" id="page" name="page" value="{{ page }}">
     <input type="hidden" id="so" name="so" value="{{ so }}">
@@ -111,7 +111,7 @@ $(document).ready(function(){
     });
     $("#btn_search").on('click', function() {
         $("#kw").val($(".kw").val());
-        $("#page").val(1);
+        $("#page").val(1);  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
         $("#searchForm").submit();
     });
     $(".so").on('change', function() {
