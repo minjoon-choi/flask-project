@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 
 from flask import Blueprint, render_template, request, url_for, g, flash

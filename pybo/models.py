@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from pybo import db
 
 question_voter = db.Table(

@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 import config
 from flaskext.markdown import Markdown
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
 
 naming_convention = {
     "ix": 'ix_%(column_0_label)s',

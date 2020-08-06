@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from config.default import *
 from logging.config import dictConfig
 

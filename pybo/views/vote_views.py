@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, url_for, flash, g
 from werkzeug.utils import redirect
 
