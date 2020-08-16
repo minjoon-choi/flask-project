@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Blueprint, url_for, flash, g
 from werkzeug.utils import redirect
 
@@ -19,6 +18,7 @@ def question(question_id):
         _question.voter.append(g.user)
         db.session.commit()
     return redirect(url_for('question.detail', question_id=question_id))
+
 
 @bp.route('/answer/<int:answer_id>/')
 @login_required

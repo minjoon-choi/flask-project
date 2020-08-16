@@ -31,8 +31,10 @@
                     </div>
                     {% if g.user == question.user %}
                     <div class="my-3">
-                        <a href="{{ url_for('question.modify', question_id=question.id) }}" class="btn btn-sm btn-outline-secondary">수정</a>
-                        <a href="#" class="delete btn btn-sm btn-outline-secondary" data-uri="{{ url_for('question.delete', question_id=question.id) }}">삭제</a>
+                        <a href="{{ url_for('question.modify', question_id=question.id) }}"
+                           class="btn btn-sm btn-outline-secondary">수정</a>
+                        <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                           data-uri="{{ url_for('question.delete', question_id=question.id) }}">삭제</a>
                     </div>
                     {% endif %}
                     <!-- 질문 댓글 Start -->
@@ -51,7 +53,7 @@
                             {% if g.user == comment.user %}
                             <a href="{{ url_for('comment.modify_question', comment_id=comment.id) }}" class="small">수정</a>,
                             <a href="#" class="small delete"
-                            data-uri="{{ url_for('comment.delete_question', comment_id=comment.id) }}">삭제</a>
+                               data-uri="{{ url_for('comment.delete_question', comment_id=comment.id) }}">삭제</a>
                             {% endif %}
                         </div>
                     {% endfor %}
@@ -59,7 +61,7 @@
                     {% endif %}
                     <div>
                         <a href="{{ url_for('comment.create_question', question_id=question.id) }}"
-                        class="small"><small>댓글 추가 ..</small></a>
+                           class="small"><small>댓글 추가 ..</small></a>
                     </div>
                     <!-- 질문 댓글 End -->
                 </div>
@@ -78,7 +80,7 @@
         <div class="col-11">  <!-- 답변영역 -->
             <div class="card">
                 <div class="card-body">
-                    <div class="card-text">{{ answer.content|markdown }}</div>
+                    <div class="card-text" style="white-space: pre-line;">{{ answer.content }}</div>
                     <div class="d-flex justify-content-end">
                         {% if answer.modify_date %}
                         <div class="badge badge-light p-2 text-left mx-3">
@@ -93,8 +95,10 @@
                     </div>
                     {% if g.user == answer.user %}
                     <div class="my-3">
-                        <a href="{{ url_for('answer.modify', answer_id=answer.id) }}" class="btn btn-sm btn-outline-secondary">수정</a>
-                        <a href="#" class ="delete btn btn-sm btn-outline-secondary" data-uri="{{ url_for('answer.delete', answer_id=answer.id) }}">삭제</a>
+                        <a href="{{ url_for('answer.modify', answer_id=answer.id) }}"
+                            class="btn btn-sm btn-outline-secondary">수정</a>
+                        <a href="#" class="delete btn btn-sm btn-outline-secondary "
+                            data-uri="{{ url_for('answer.delete', answer_id=answer.id) }}">삭제</a>
                     </div>
                     {% endif %}
                     <!-- 답변 댓글 Start -->
@@ -113,7 +117,7 @@
                             {% if g.user == comment.user %}
                             <a href="{{ url_for('comment.modify_answer', comment_id=comment.id) }}" class="small">수정</a>,
                             <a href="#" class="small delete"
-                            data-uri="{{ url_for('comment.delete_answer', comment_id=comment.id) }}">삭제</a>
+                               data-uri="{{ url_for('comment.delete_answer', comment_id=comment.id) }}">삭제</a>
                             {% endif %}
                         </div>
                     {% endfor %}
@@ -121,13 +125,13 @@
                     {% endif %}
                     <div>
                         <a href="{{ url_for('comment.create_answer', answer_id=answer.id) }}"
-                        class="small"><small>댓글 추가 ..</small></a>
+                           class="small"><small>댓글 추가 ..</small></a>
                     </div>
                     <!-- 답변 댓글 End -->
                 </div>
             </div>
         </div>
-    </div>        
+    </div>
     {% endfor %}
     <form action="{{ url_for('answer.create', question_id=question.id) }}" method="post" class="my-3">
         {{ form.csrf_token }}

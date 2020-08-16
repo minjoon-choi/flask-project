@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 
 from flask import Blueprint, url_for, request, render_template, g, flash
@@ -25,6 +24,7 @@ def create_question(question_id):
             url_for('question.detail', question_id=question_id), comment.id))
     return render_template('comment/comment_form.html', form=form)
 
+
 @bp.route('/modify/question/<int:comment_id>', methods=('GET', 'POST'))
 @login_required
 def modify_question(comment_id):
@@ -44,6 +44,7 @@ def modify_question(comment_id):
         form = CommentForm(obj=comment)
     return render_template('comment/comment_form.html', form=form)
 
+
 @bp.route('/delete/question/<int:comment_id>')
 @login_required
 def delete_question(comment_id):
@@ -55,6 +56,7 @@ def delete_question(comment_id):
     db.session.delete(comment)
     db.session.commit()
     return redirect(url_for('question.detail', question_id=question_id))
+
 
 @bp.route('/create/answer/<int:answer_id>', methods=('GET', 'POST'))
 @login_required
