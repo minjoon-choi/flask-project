@@ -12,6 +12,23 @@
         {% endfor %}
         <!-- 오류표시 End -->
         <div class="form-group">
+            <div class="row">
+            <div class="col-2">
+                <p>제안 #1</p>
+            </div>
+            <div class="col-4">
+            <label for="subject">고객사명</label>
+            <input type="text" class="form-control" name="company" id="company"
+                   value="{{ form.company.data or '' }}">
+            </div>
+            <div class="col-4">
+            <label for="subject">계열사품목코드</label>
+            <input type="text" class="form-control" name="prod_id" id="prod_id"
+                   value="{{ form.prod_id.data or '' }}">
+            </div>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="subject">제목</label>
             <input type="text" class="form-control" name="subject" id="subject"
                    value="{{ form.subject.data or '' }}">

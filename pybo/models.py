@@ -15,6 +15,8 @@ answer_voter = db.Table(
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    company = db.Column(db.String(30), nullable=False)
+    prod_id = db.Column(db.String(30), nullable=False)
     subject = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)

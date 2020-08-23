@@ -21,8 +21,10 @@
         <tr class="text-center thead-dark">
             <th>번호</th>
             <th>추천</th>
-            <th style="width:50%">제목</th>
-            <th>글쓴이</th>
+            <th>고객사명</th>
+            <th>계열사<br>품목코드</th>
+            <th style="width:30%">품명</th>
+            <th>구매담당자</th>
             <th>작성일시</th>
         </tr>
         </thead>
@@ -36,6 +38,8 @@
                 <span class="badge badge-warning px-2 py-1">{{ question.voter|length }}</span>
                 {% endif %}
             </td>
+            <td>{{ question.company }}</td>
+            <td>{{ question.prod_id }}</td>
             <td class="text-left">
                 <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
                 {% if question.answer_set|length > 0 %}
@@ -94,7 +98,7 @@
         {% endif %}
     </ul>
     <!-- 페이징처리 끝 -->
-    <a href="{{ url_for('question.create') }}" class="btn btn-primary">질문 등록하기</a>
+    <a href="{{ url_for('question.create') }}" class="btn btn-primary">제안 등록하기</a>
 </div>
 <form id="searchForm" method="get" action="{{ url_for('question._list') }}">
     <input type="hidden" id="kw" name="kw" value="{{ kw or '' }}">

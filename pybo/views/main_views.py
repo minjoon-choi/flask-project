@@ -8,6 +8,9 @@ bp = Blueprint('main', __name__, url_prefix='/')
 def hello_pybo():
     return 'Hello, Pybo!'
 
+@bp.route('/mjchois')
+def mjchois():
+    return 'Author of Purchasing Performance Management System'
 
 @bp.route('/')
 def index():

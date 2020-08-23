@@ -51,6 +51,7 @@ def _list():
             .join(User) \
             .outerjoin(sub_query, sub_query.c.question_id == Question.id) \
             .filter(Question.subject.ilike(search) |  # 질문제목
+                    Question.prod_id.ilike(search) | # 계열사품목코드
                     Question.content.ilike(search) |  # 질문내용
                     User.username.ilike(search) |  # 질문작성자
                     sub_query.c.content.ilike(search) |  # 답변내용
@@ -75,7 +76,8 @@ def detail(question_id):
 def create():
     form = QuestionForm()
     if request.method == 'POST' and form.validate_on_submit():
-        question = Question(subject=form.subject.data, content=form.content.data,
+        question = Question(company=form.company.data, prod_id=form.prod_id.data,
+                            subject=form.subject.data, content=form.content.data,
                             create_date=datetime.now(), user=g.user)
         db.session.add(question)
         db.session.commit()
