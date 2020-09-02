@@ -17,15 +17,17 @@ class AnswerForm(FlaskForm):
 
 
 class UserCreateForm(FlaskForm):
-    username = StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
-    password1 = PasswordField('비밀번호', validators=[
+    userid = StringField('userid', validators=[DataRequired(), Length(min=3, max=25)])
+    username = StringField('username', validators=[DataRequired(), Length(min=3, max=25)])
+    password1 = PasswordField('password1', validators=[
         DataRequired(), EqualTo('password2', '비밀번호가 일치하지 않습니다')])
-    password2 = PasswordField('비밀번호확인', validators=[DataRequired()])
-    email = EmailField('이메일', [DataRequired(), Email()])
+    password2 = PasswordField('password2', validators=[DataRequired()])
+    userteam = StringField('userteam', validators=[DataRequired(), Length(min=3, max=25)])
+    email = EmailField('email', [DataRequired(), Email()])
 
 
 class UserLoginForm(FlaskForm):
-    username = StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
+    userid = StringField('userid', validators=[DataRequired(), Length(min=3, max=25)])
     password = PasswordField('비밀번호', validators=[DataRequired()])
 
 
