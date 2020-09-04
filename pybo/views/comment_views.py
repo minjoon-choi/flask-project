@@ -5,33 +5,33 @@ from werkzeug.utils import redirect
 
 from pybo import db
 from pybo.forms import CommentForm
-from pybo.models import Question, Comment, Answer
+from pybo.models import Idea, Comment, Answer
 from pybo.views.auth_views import login_required
 
 bp = Blueprint('comment', __name__, url_prefix='/comment')
 
 
-@bp.route('/create/question/<int:question_id>', methods=('GET', 'POST'))
+@bp.route('/create/idea/<int:idea_id>', methods=('GET', 'POST'))
 @login_required
-def create_question(question_id):
+def create_idea(idea_id):
     form = CommentForm()
-    question = Question.query.get_or_404(question_id)
+    idea = Idea.query.get_or_404(idea_id)
     if request.method == 'POST' and form.validate_on_submit():
-        comment = Comment(user=g.user, content=form.content.data, create_date=datetime.now(), question=question)
+        comment = Comment(user=g.user, content=form.content.data, create_date=datetime.now(), idea=idea)
         db.session.add(comment)
         db.session.commit()
         return redirect('{}#comment_{}'.format(
-            url_for('question.detail', question_id=question_id), comment.id))
+            url_for('idea.detail', idea_id=idea_id), comment.id))
     return render_template('comment/comment_form.html', form=form)
 
 
-@bp.route('/modify/question/<int:comment_id>', methods=('GET', 'POST'))
+@bp.route('/modify/idea/<int:comment_id>', methods=('GET', 'POST'))
 @login_required
-def modify_question(comment_id):
+def modify_idea(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     if g.user != comment.user:
         flash('수정권한이 없습니다')
-        return redirect(url_for('question.detail', question_id=comment.question.id))
+        return redirect(url_for('idea.detail', idea_id=comment.idea.id))
     if request.method == 'POST':
         form = CommentForm()
         if form.validate_on_submit():
@@ -39,23 +39,23 @@ def modify_question(comment_id):
             comment.modify_date = datetime.now()  # 수정일시 저장
             db.session.commit()
             return redirect('{}#comment_{}'.format(
-                url_for('question.detail', question_id=comment.question.id), comment.id))
+                url_for('idea.detail', idea_id=comment.idea.id), comment.id))
     else:
         form = CommentForm(obj=comment)
     return render_template('comment/comment_form.html', form=form)
 
 
-@bp.route('/delete/question/<int:comment_id>')
+@bp.route('/delete/idea/<int:comment_id>')
 @login_required
-def delete_question(comment_id):
+def delete_idea(comment_id):
     comment = Comment.query.get_or_404(comment_id)
-    question_id = comment.question.id
+    idea_id = comment.idea.id
     if g.user != comment.user:
         flash('삭제권한이 없습니다')
-        return redirect(url_for('question.detail', question_id=question_id))
+        return redirect(url_for('idea.detail', idea_id=idea_id))
     db.session.delete(comment)
     db.session.commit()
-    return redirect(url_for('question.detail', question_id=question_id))
+    return redirect(url_for('idea.detail', idea_id=idea_id))
 
 
 @bp.route('/create/answer/<int:answer_id>', methods=('GET', 'POST'))
@@ -68,7 +68,7 @@ def create_answer(answer_id):
         db.session.add(comment)
         db.session.commit()
         return redirect('{}#comment_{}'.format(
-            url_for('question.detail', question_id=answer.question.id), comment.id))
+            url_for('idea.detail', idea_id=answer.idea.id), comment.id))
     return render_template('comment/comment_form.html', form=form)
 
 
@@ -78,7 +78,7 @@ def modify_answer(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     if g.user != comment.user:
         flash('수정권한이 없습니다')
-        return redirect(url_for('question.detail', question_id=comment.answer.id))
+        return redirect(url_for('idea.detail', idea_id=comment.answer.id))
     if request.method == 'POST':
         form = CommentForm()
         if form.validate_on_submit():
@@ -86,7 +86,7 @@ def modify_answer(comment_id):
             comment.modify_date = datetime.now()  # 수정일시 저장
             db.session.commit()
             return redirect('{}#comment_{}'.format(
-                url_for('question.detail', question_id=comment.answer.question.id), comment.id))
+                url_for('idea.detail', idea_id=comment.answer.idea.id), comment.id))
     else:
         form = CommentForm(obj=comment)
     return render_template('comment/comment_form.html', form=form)
@@ -96,10 +96,10 @@ def modify_answer(comment_id):
 @login_required
 def delete_answer(comment_id):
     comment = Comment.query.get_or_404(comment_id)
-    question_id = comment.answer.question.id
+    idea_id = comment.answer.idea.id
     if g.user != comment.user:
         flash('삭제권한이 없습니다')
-        return redirect(url_for('question.detail', question_id=question_id))
+        return redirect(url_for('idea.detail', idea_id=idea_id))
     db.session.delete(comment)
     db.session.commit()
-    return redirect(url_for('question.detail', question_id=question_id))
+    return redirect(url_for('idea.detail', idea_id=idea_id))

@@ -27,19 +27,19 @@
         </tr>
         </thead>
         <tbody>
-        {% if question_list %}
-        {% for question in question_list.items %}
+        {% if idea_list %}
+        {% for idea in idea_list.items %}
         <tr class="text-center">
             <td>제안번호</td>
             <td class="text-left">
-                <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
-                {% if question.answer_set|length > 0 %}
-                <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
+                <a href="{{ url_for('idea.detail', idea_id=idea.id) }}">{{ idea.subject }}</a>
+                {% if idea.answer_set|length > 0 %}
+                <span class="text-danger small ml-2">{{ idea.answer_set|length }}</span>
                 {% endif %}
             </td>
-            <td>{{ question.user.userteam }}</td> 
-            <td>{{ question.user.username }}</td> 
-            <td>{{ question.create_date|datetime }}</td>
+            <td>{{ idea.user.userteam }}</td> 
+            <td>{{ idea.user.username }}</td> 
+            <td>{{ idea.create_date|datetime }}</td>
         </tr>
         {% endfor %}
         {% else %}
@@ -52,18 +52,18 @@
     <!-- 페이징처리 시작 -->
     <ul class="pagination justify-content-center">
         <!-- 이전페이지 -->
-        {% if question_list.has_prev %}
+        {% if idea_list.has_prev %}
         <li class="page-item">
-            <a class="page-link" data-page="{{ question_list.prev_num }}" href="#">이전</a>
+            <a class="page-link" data-page="{{ idea_list.prev_num }}" href="#">이전</a>
         </li>
         {% else %}
         <li class="page-item disabled">
             <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
         </li>
         {% endif %}
-        {% for page_num in question_list.iter_pages() %}
+        {% for page_num in idea_list.iter_pages() %}
             {% if page_num %}
-                {% if page_num != question_list.page %}
+                {% if page_num != idea_list.page %}
                 <li class="page-item">
                     <a class="page-link" data-page="{{ page_num }}" href="#">{{ page_num }}</a>
                 </li>
@@ -79,9 +79,9 @@
            {% endif %}
         {% endfor %}
         <!-- 다음페이지 -->
-        {% if question_list.has_next %}
+        {% if idea_list.has_next %}
         <li class="page-item">
-            <a class="page-link" data-page="{{ question_list.next_num }}" href="#">다음</a>
+            <a class="page-link" data-page="{{ idea_list.next_num }}" href="#">다음</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -90,9 +90,9 @@
         {% endif %}
     </ul>
     <!-- 페이징처리 끝 -->
-    <a href="{{ url_for('question.create') }}" class="btn btn-primary">제안 등록하기</a>
+    <a href="{{ url_for('idea.create') }}" class="btn btn-primary">제안 등록하기</a>
 </div>
-<form id="searchForm" method="get" action="{{ url_for('question._list') }}">
+<form id="searchForm" method="get" action="{{ url_for('idea._list') }}">
     <input type="hidden" id="kw" name="kw" value="{{ kw or '' }}">
     <input type="hidden" id="page" name="page" value="{{ page }}">
     <input type="hidden" id="so" name="so" value="{{ so }}">

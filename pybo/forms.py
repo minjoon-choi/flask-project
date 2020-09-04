@@ -5,7 +5,7 @@ from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 
 
-class QuestionForm(FlaskForm):
+class IdeaForm(FlaskForm):
     company = StringField('고객사명', validators=[DataRequired('고객사명은 필수입력 항목입니다.')])
     prod_id = StringField('계열사품목코드', validators=[DataRequired('계열사품목코드는 필수입력 항목입니다.')])
     subject = StringField('제목', validators=[DataRequired('제목은 필수입력 항목입니다.')])

@@ -6,24 +6,24 @@ from werkzeug.utils import redirect
 from .auth_views import login_required
 from .. import db
 from ..forms import AnswerForm
-from ..models import Question, Answer
+from ..models import Idea, Answer
 
 bp = Blueprint('answer', __name__, url_prefix='/answer')
 
 
-@bp.route('/create/<int:question_id>', methods=('POST',))
+@bp.route('/create/<int:idea_id>', methods=('POST',))
 @login_required
-def create(question_id):
+def create(idea_id):
     form = AnswerForm()
-    question = Question.query.get_or_404(question_id)
+    idea = Idea.query.get_or_404(idea_id)
     if form.validate_on_submit():
         content = request.form['content']
         answer = Answer(content=content, create_date=datetime.now(), user=g.user)
-        question.answer_set.append(answer)
+        idea.answer_set.append(answer)
         db.session.commit()
         return redirect('{}#answer_{}'.format(
-            url_for('question.detail', question_id=question_id), answer.id))
-    return render_template('question/question_detail.html', question=question, form=form)
+            url_for('idea.detail', idea_id=idea_id), answer.id))
+    return render_template('idea/idea_detail.html', idea=idea, form=form)
 
 
 @bp.route('/modify/<int:answer_id>', methods=('GET', 'POST'))
@@ -32,7 +32,7 @@ def modify(answer_id):
     answer = Answer.query.get_or_404(answer_id)
     if g.user != answer.user:
         flash('수정권한이 없습니다')
-        return redirect(url_for('question.detail', question_id=answer.question.id))
+        return redirect(url_for('idea.detail', idea_id=answer.idea.id))
     if request.method == "POST":
         form = AnswerForm()
         if form.validate_on_submit():
@@ -40,7 +40,7 @@ def modify(answer_id):
             answer.modify_date = datetime.now()  # 수정일시 저장
             db.session.commit()
             return redirect('{}#answer_{}'.format(
-                url_for('question.detail', question_id=answer.question.id), answer.id))
+                url_for('idea.detail', idea_id=answer.idea.id), answer.id))
     else:
         form = AnswerForm(obj=answer)
     return render_template('answer/answer_form.html', answer=answer, form=form)
@@ -50,10 +50,10 @@ def modify(answer_id):
 @login_required
 def delete(answer_id):
     answer = Answer.query.get_or_404(answer_id)
-    question_id = answer.question.id
+    idea_id = answer.idea.id
     if g.user != answer.user:
         flash('삭제권한이 없습니다')
     else:
         db.session.delete(answer)
         db.session.commit()
-    return redirect(url_for('question.detail', question_id=question_id))
+    return redirect(url_for('idea.detail', idea_id=idea_id))
