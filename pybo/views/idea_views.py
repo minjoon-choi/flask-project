@@ -5,8 +5,8 @@ from sqlalchemy import func, nullslast
 from werkzeug.utils import redirect
 
 from .. import db
-from ..forms import IdeaForm, AnswerForm
-from ..models import Idea, Answer, User, idea_voter
+from ..forms import IdeaForm, FeedbackForm
+from ..models import Idea, Feedback, User, idea_voter, Product, Company
 from ..views.auth_views import login_required
 
 bp = Blueprint('idea', __name__, url_prefix='/idea')
@@ -32,26 +32,26 @@ def _list():
             .group_by(idea_voter.c.idea_id).subquery()
         idea_list = Idea.query \
             .outerjoin(sub_query, Idea.id == sub_query.c.idea_id) \
-            .order_by(_nullslast(sub_query.c.num_voter.desc()), Idea.create_date.desc())
+            .order_by(_nullslast(sub_query.c.num_voter.desc()), Idea.regDate.desc())
     elif so == 'popular':
-        sub_query = db.session.query(Answer.idea_id, func.count('*').label('num_answer')) \
-            .group_by(Answer.idea_id).subquery()
+        sub_query = db.session.query(Feedback.idea_id, func.count('*').label('num_feedback')) \
+            .group_by(Feedback.idea_id).subquery()
         idea_list = Idea.query \
             .outerjoin(sub_query, Idea.id == sub_query.c.idea_id) \
-            .order_by(_nullslast(sub_query.c.num_answer.desc()), Idea.create_date.desc())
+            .order_by(_nullslast(sub_query.c.num_feedback.desc()), Idea.regDate.desc())
     else:  # recent
-        idea_list = Idea.query.order_by(Idea.create_date.desc())
+        idea_list = Idea.query.order_by(Idea.regDate.desc())
 
     # 조회
     if kw:
         search = '%%{}%%'.format(kw)
-        sub_query = db.session.query(Answer.idea_id, Answer.content, User.username) \
-            .join(User, Answer.user_id == User.id).subquery()
+        sub_query = db.session.query(Feedback.idea_id, Feedback.content, User.username) \
+            .join(User, Feedback.userid == User.userid).subquery()
         idea_list = idea_list \
             .join(User) \
             .outerjoin(sub_query, sub_query.c.idea_id == Idea.id) \
-            .filter(Idea.subject.ilike(search) |  # 질문제목
-                    Idea.prod_id.ilike(search) | # 계열사품목코드
+            .filter(Idea.ideaTitle.ilike(search) |  # 아이디어 제목
+                    Idea.prodID.ilike(search) | # 계열사품목코드
                     Idea.content.ilike(search) |  # 제안내용
                     User.username.ilike(search) |  # 질문작성자
                     sub_query.c.content.ilike(search) |  # 답변내용
@@ -66,7 +66,7 @@ def _list():
 
 @bp.route('/detail/<int:idea_id>/')
 def detail(idea_id):
-    form = AnswerForm()
+    form = FeedbackForm()
     idea = Idea.query.get_or_404(idea_id)
     return render_template('idea/idea_detail.html', idea=idea, form=form)
 
@@ -76,9 +76,14 @@ def detail(idea_id):
 def create():
     form = IdeaForm()
     if request.method == 'POST' and form.validate_on_submit():
-        idea = Idea(company=form.company.data, prod_id=form.prod_id.data,
-                            subject=form.subject.data, content=form.content.data,
-                            create_date=datetime.now(), user=g.user)
+        prodName_query = '버터' # prodID's foreign key 
+        companyName_query = '파리크라상' # comapnyID's foreign key 
+        idea = Idea(ideaType=form.ideaType.data, ideaNum=form.ideaNum.data,
+                            ideaStatus=form.ideaStatus.data, 
+                            companyID=form.companyID.data, companyName=companyName_query,
+                            prodID=form.prodID.data, prodName=prodName_query,
+                            ideaTitle=form.ideaTitle.data, content=form.content.data,
+                            regDate=datetime.now(), user=g.user)
         db.session.add(idea)
         db.session.commit()
         return redirect(url_for('main.index'))
@@ -96,7 +101,7 @@ def modify(idea_id):
         form = IdeaForm()
         if form.validate_on_submit():
             form.populate_obj(idea)
-            idea.modify_date = datetime.now()  # 수정일시 저장
+            idea.editDate = datetime.now()  # 수정일시 저장
             db.session.commit()
             return redirect(url_for('idea.detail', idea_id=idea_id))
     else:

@@ -2,7 +2,7 @@ from flask import Blueprint, url_for, flash, g
 from werkzeug.utils import redirect
 
 from pybo import db
-from pybo.models import Idea, Answer
+from pybo.models import Idea, Feedback
 from pybo.views.auth_views import login_required
 
 bp = Blueprint('vote', __name__, url_prefix='/vote')
@@ -20,13 +20,13 @@ def idea(idea_id):
     return redirect(url_for('idea.detail', idea_id=idea_id))
 
 
-@bp.route('/answer/<int:answer_id>/')
+@bp.route('/feedback/<int:feedback_id>/')
 @login_required
-def answer(answer_id):
-    _answer = Answer.query.get_or_404(answer_id)
-    if g.user == _answer.user:
+def feedback(feedback_id):
+    _feedback = feedback.query.get_or_404(feedback_id)
+    if g.user == _feedback.user:
         flash('본인이 작성한 글은 추천할수 없습니다')
     else:
-        _answer.voter.append(g.user)
+        _feedback.voter.append(g.user)
         db.session.commit()
-    return redirect(url_for('idea.detail', idea_id=_answer.idea.id))
+    return redirect(url_for('idea.detail', idea_id=_feedback.idea.id))

@@ -12,33 +12,65 @@
         {% endfor %}
         <!-- 오류표시 End -->
         <div class="form-group">
-            <label for="subject">제안명</label>
-            <input type="text" class="form-control" name="subject" id="subject"
-                   value="{{ form.subject.data or '' }}">
+            <div class="row">
+            <div class="col-6 ">
+            <label for="ideaType">아이디어 유형</label>
+            <select class="form-control" name="ideaType" id="ideaType"
+                value="{{ form.ideaType.data or '' }}">
+                <option>대체원료</option>
+                <option>공급사최적화</option>
+                <option>SPEC최적화</option>
+                <option>선도구매</option>
+                <option>협상</option>
+            </select>
+            </div>
+            <div class="col-6">
+            <label for="ideaNum">아이디어 번호</label>
+            <input type="text" class="form-control" name="ideaNum" id="ideaNum"
+                value="{{ form.ideaNum.data or '' }}">
+            </div>
+        </div>
+        </div>
+        <div class="form-group">
+            <label for="ideaTitle">제안명</label>
+            <input type="text" class="form-control" name="ideaTitle" id="ideaTitle"
+                   value="{{ form.ideaTitle.data or '' }}">
+        </div>
+        <div class="form-group">
+            <label for="ideaStatus">아이디어 진행현황</label>
+            <select class="form-control" name="ideaStatus" id="ideaStatus"
+                   value="{{ form.ideaStatus.data or '' }}">
+                <option>제안</option>
+                <option>샘플</option>
+                <option>연구소</option>
+                <option>제안확정</option>
+                <option>발주</option>
+                <option>입고</option>
+            </select>
         </div>
         <div class="form-group">
             <div class="row">
             <div class="col-6 ">
-            <label for="subject">고객사명</label>
-            <select class="form-control" name="company" id="company"
-                   value="{{ form.company.data or '' }}">
-                <option>파리크라상</option>
-                <option>에스피엘</option>
-                <option>에스피씨삼립</option>
-                <option>샤니</option>
-                <option>호남샤니</option>
-                <option>비알코리아</option>
-                <option>밀다원</option>
-                <option>그릭슈바인</option>
-                <option>에그팜</option>
-                <option>에스피씨팩</option>
-                <option>샌드팜</option>
+            <label for="ideaTitle">고객사명</label>
+            <select class="form-control" name="companyID" id="companyID"
+                   value="{{ form.companyID.data or '' }}">
+                <option value="PC00">파리크라상</option>
+                <option value="SP00">에스피엘</option>
+                <option value="SL00">에스피씨삼립</option>
+                <option value="A100">샤니</option>
+                <option value="B100">호남샤니</option>
+                <option value="BR00">비알코리아</option>
+                <option value="1000">밀다원</option>
+                <option value="AP00">그릭슈바인</option>
+                <option value="E100">에그팜</option>
+                <option value="SC01">에스피씨팩</option>
+                <option value="C100">샌드팜</option>
             </select>
             </div>
             <div class="col-6">
-            <label for="subject">계열사품목코드</label>
-            <input type="text" class="form-control" name="prod_id" id="prod_id"
-                   value="{{ form.prod_id.data or '' }}">
+            <label for="ideaTitle">계열사품목코드</label>
+            <input type="text" class="form-control" name="prodID" id="prodID"
+                   value="{{ form.prodID.data or '' }}">
             </div>
             </div>
         </div>

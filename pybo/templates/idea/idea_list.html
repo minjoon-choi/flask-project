@@ -32,14 +32,14 @@
         <tr class="text-center">
             <td>제안번호</td>
             <td class="text-left">
-                <a href="{{ url_for('idea.detail', idea_id=idea.id) }}">{{ idea.subject }}</a>
-                {% if idea.answer_set|length > 0 %}
-                <span class="text-danger small ml-2">{{ idea.answer_set|length }}</span>
+                <a href="{{ url_for('idea.detail', idea_id=idea.id) }}">{{ idea.ideaTitle }}</a>
+                {% if idea.feedback_set|length > 0 %}
+                <span class="text-danger small ml-2">{{ idea.feedback_set|length }}</span>
                 {% endif %}
             </td>
             <td>{{ idea.user.userteam }}</td> 
             <td>{{ idea.user.username }}</td> 
-            <td>{{ idea.create_date|datetime }}</td>
+            <td>{{ idea.regDate|datetime }}</td>
         </tr>
         {% endfor %}
         {% else %}

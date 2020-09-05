@@ -35,10 +35,10 @@ def create_app():
     from . import models
 
     # 블루프린트
-    from .views import main_views, idea_views, answer_views, auth_views, comment_views, vote_views
+    from .views import main_views, idea_views, feedback_views, auth_views, comment_views, vote_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(idea_views.bp)
-    app.register_blueprint(answer_views.bp)
+    app.register_blueprint(feedback_views.bp)
     app.register_blueprint(auth_views.bp)
     app.register_blueprint(comment_views.bp)
     app.register_blueprint(vote_views.bp)

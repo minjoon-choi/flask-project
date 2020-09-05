@@ -42,7 +42,7 @@ def login():
             error = "비밀번호가 올바르지 않습니다."
         if error is None:
             session.clear()
-            session['user_id'] = user.id
+            session['userid'] = user.id
             return redirect(url_for('main.index'))
         flash(error)
     return render_template('auth/login.html', form=form)
@@ -50,11 +50,11 @@ def login():
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user_id')
-    if user_id is None:
+    userid = session.get('userid')
+    if userid is None:
         g.user = None
     else:
-        g.user = User.query.get(user_id)
+        g.user = User.query.get(userid)
 
 
 @bp.route('/logout/')

@@ -6,13 +6,16 @@ from wtforms.validators import DataRequired, Length, EqualTo, Email
 
 
 class IdeaForm(FlaskForm):
-    company = StringField('고객사명', validators=[DataRequired('고객사명은 필수입력 항목입니다.')])
-    prod_id = StringField('계열사품목코드', validators=[DataRequired('계열사품목코드는 필수입력 항목입니다.')])
-    subject = StringField('제목', validators=[DataRequired('제목은 필수입력 항목입니다.')])
+    ideaType = StringField('고객사명', validators=[DataRequired('아이디어 유형을 선택하세요.')])
+    ideaNum = StringField('고객사명', validators=[DataRequired('아이디어 번호 입력')]) # Required auto generated num 
+    companyID = StringField('고객사명', validators=[DataRequired('고객사명은 필수입력 항목입니다.')])
+    ideaStatus = prodID = StringField('계열사품목코드', validators=[DataRequired('현재 아이디어 진행현황을 선택하세요.')]) 
+    prodID = StringField('계열사품목코드', validators=[DataRequired('계열사품목코드는 필수입력 항목입니다.')])
+    ideaTitle = StringField('제목', validators=[DataRequired('제목은 필수입력 항목입니다.')])
     content = TextAreaField('내용', validators=[DataRequired('내용은 필수입력 항목입니다.')])
 
 
-class AnswerForm(FlaskForm):
+class FeedbackForm(FlaskForm):
     content = TextAreaField('내용', validators=[DataRequired('내용은 필수입력 항목입니다.')])
 
 
