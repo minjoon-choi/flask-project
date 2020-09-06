@@ -34,8 +34,10 @@ class Idea(db.Model):
     ideaType = db.Column(db.String(50), nullable=False) #new
     companyID = db.Column(db.String(10), nullable=False)
     companyName = db.Column(db.String(50), db.ForeignKey('company.companyID', ondelete='CASCADE'), nullable=False)
+    company = db.relationship('Company')
     prodID = db.Column(db.String(30), nullable=False) #name change/ prod_ID to prodID
     prodName = db.Column(db.String(100), db.ForeignKey('product.prodName'))
+    prod = db.relationship('Product')
     ideaTitle = db.Column(db.String(200), nullable=False) #name change / subject to ideaTitle
     ideaStatus = db.Column(db.String(30), nullable=True) # new
     effectBegin = db.Column(db.DateTime(), nullable=True) # new

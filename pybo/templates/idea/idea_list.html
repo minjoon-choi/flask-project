@@ -30,7 +30,7 @@
         {% if idea_list %}
         {% for idea in idea_list.items %}
         <tr class="text-center">
-            <td>제안번호</td>
+            <td>{{ idea.ideaNum }}</td>
             <td class="text-left">
                 <a href="{{ url_for('idea.detail', idea_id=idea.id) }}">{{ idea.ideaTitle }}</a>
                 {% if idea.feedback_set|length > 0 %}

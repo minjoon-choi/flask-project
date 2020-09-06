@@ -76,12 +76,16 @@ def detail(idea_id):
 def create():
     form = IdeaForm()
     if request.method == 'POST' and form.validate_on_submit():
-        prodName_query = '버터' # prodID's foreign key 
-        companyName_query = '파리크라상' # comapnyID's foreign key 
-        idea = Idea(ideaType=form.ideaType.data, ideaNum=form.ideaNum.data,
+        import time
+        year = str(time.strftime('%y', time.localtime()))
+        companyName_query = Company.query.filter_by(companyID=form.companyID.data).first() 
+        prodName_query = Product.query.filter_by(prodID=form.prodID.data).first()
+        count_query = str(db.session.query(Idea).count())
+        count_query_format = count_query.zfill(4)
+        idea = Idea(ideaType=form.ideaType.data, ideaNum='구매'+year+'-'+count_query_format,
                             ideaStatus=form.ideaStatus.data, 
-                            companyID=form.companyID.data, companyName=companyName_query,
-                            prodID=form.prodID.data, prodName=prodName_query,
+                            companyID=form.companyID.data, companyName=companyName_query.companyName,
+                            prodID=form.prodID.data, prodName=prodName_query.prodName,
                             ideaTitle=form.ideaTitle.data, content=form.content.data,
                             regDate=datetime.now(), user=g.user)
         db.session.add(idea)
