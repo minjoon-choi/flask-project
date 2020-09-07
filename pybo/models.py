@@ -33,7 +33,7 @@ class Idea(db.Model):
     ideaNum = db.Column(db.String(30), unique=True, nullable=False) #new
     ideaType = db.Column(db.String(50), nullable=False) #new
     companyID = db.Column(db.String(10), nullable=False)
-    companyName = db.Column(db.String(50), db.ForeignKey('company.companyID', ondelete='CASCADE'), nullable=False)
+    companyName = db.Column(db.String(50), db.ForeignKey('company.companyName', ondelete='CASCADE'), nullable=False)
     company = db.relationship('Company')
     prodID = db.Column(db.String(30), nullable=False) #name change/ prod_ID to prodID
     prodName = db.Column(db.String(100), db.ForeignKey('product.prodName'))
@@ -48,7 +48,8 @@ class Idea(db.Model):
     content = db.Column(db.Text(), nullable=False)
     regDate = db.Column(db.DateTime(), nullable=False)
     # user.id (user_ID) to user.userid
-    userid = db.Column(db.Integer, db.ForeignKey('user.userid', ondelete='CASCADE'), nullable=False)
+    userid = db.Column(db.String(150), nullable=False)
+    userName = db.Column(db.Integer, db.ForeignKey('user.username', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('idea_set'))
     editDate = db.Column(db.DateTime(), nullable=True)
     voter = db.relationship('User', secondary=idea_voter, backref=db.backref('idea_voter_set'))

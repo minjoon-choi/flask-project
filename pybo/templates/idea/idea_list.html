@@ -20,6 +20,8 @@
         <thead>
         <tr class="text-center thead-dark">
             <th>ideaID</th>
+            <th>ideaType</th>
+            <th>ideaStatus</th>
             <th>ideaName</th>
             <th>userTeam</th>
             <th>userName</th>
@@ -30,7 +32,11 @@
         {% if idea_list %}
         {% for idea in idea_list.items %}
         <tr class="text-center">
-            <td>{{ idea.ideaNum }}</td>
+            <td>
+                <a href="{{ url_for('idea.detail', idea_id=idea.id) }}">{{ idea.ideaNum }}</a>
+            </td>
+            <td>{{ idea.ideaType }}</td>
+            <td>{{ idea.ideaStatus }}</td>
             <td class="text-left">
                 <a href="{{ url_for('idea.detail', idea_id=idea.id) }}">{{ idea.ideaTitle }}</a>
                 {% if idea.feedback_set|length > 0 %}

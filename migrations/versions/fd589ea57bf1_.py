@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 3bd67d91280d
+Revision ID: fd589ea57bf1
 Revises: 
-Create Date: 2020-09-05 21:45:21.860117
+Create Date: 2020-09-07 20:45:57.192280
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3bd67d91280d'
+revision = 'fd589ea57bf1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -62,13 +62,15 @@ def upgrade():
     sa.Column('estSavings', sa.Float(), nullable=True),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('regDate', sa.DateTime(), nullable=False),
-    sa.Column('userid', sa.Integer(), nullable=False),
+    sa.Column('userid', sa.String(length=150), nullable=False),
+    sa.Column('userName', sa.Integer(), nullable=False),
     sa.Column('editDate', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['companyName'], ['company.companyID'], name=op.f('fk_idea_companyName_company'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['companyName'], ['company.companyName'], name=op.f('fk_idea_companyName_company'), ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['prodName'], ['product.prodName'], name=op.f('fk_idea_prodName_product')),
-    sa.ForeignKeyConstraint(['userid'], ['user.userid'], name=op.f('fk_idea_userid_user'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['userName'], ['user.username'], name=op.f('fk_idea_userName_user'), ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_idea')),
-    sa.UniqueConstraint('ideaNum', name=op.f('uq_idea_ideaNum'))
+    sa.UniqueConstraint('ideaNum', name=op.f('uq_idea_ideaNum')),
+    sa.UniqueConstraint('userid', name=op.f('uq_idea_userid'))
     )
     op.create_table('feedback',
     sa.Column('id', sa.Integer(), nullable=False),

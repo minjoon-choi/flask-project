@@ -82,12 +82,14 @@ def create():
         prodName_query = Product.query.filter_by(prodID=form.prodID.data).first()
         count_query = str(db.session.query(Idea).count())
         count_query_format = count_query.zfill(4)
-        idea = Idea(ideaType=form.ideaType.data, ideaNum='구매'+year+'-'+count_query_format,
-                            ideaStatus=form.ideaStatus.data, 
-                            companyID=form.companyID.data, companyName=companyName_query.companyName,
+        idea = Idea(ideaNum='구매'+year+'-'+count_query_format, ideaType=form.ideaType.data, 
+                            ideaStatus=form.ideaStatus.data, effectBegin=form.effectBegin.data, 
+                            effectEnd=form.effectEnd.data, companyID=form.companyID.data, 
+                            ideaTitle=form.ideaTitle.data, companyName=companyName_query.companyName,
                             prodID=form.prodID.data, prodName=prodName_query.prodName,
-                            ideaTitle=form.ideaTitle.data, content=form.content.data,
-                            regDate=datetime.now(), user=g.user)
+                            priceBefore=form.priceBefore.data, priceAfter=form.priceAfter.data,
+                            estSavings=form.estSavings.data, content=form.content.data,
+                            regDate=datetime.now(), userid=g.user.userid, userName=g.user.username)
         db.session.add(idea)
         db.session.commit()
         return redirect(url_for('main.index'))
