@@ -13,12 +13,12 @@ feedback_voter = db.Table(
 )
 
 
-class Company(db.Model): #new db
+class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     companyID = db.Column(db.String(10), unique=True, nullable=False)
     companyName = db.Column(db.String(50), nullable=False)
 
-class Product(db.Model): #new db
+class Product(db.Model):
     __table_args__ = (
          db.UniqueConstraint('companyID', 'prodID'),
     )
@@ -30,24 +30,23 @@ class Product(db.Model): #new db
 
 class Idea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    ideaNum = db.Column(db.String(30), unique=True, nullable=False) #new
-    ideaType = db.Column(db.String(50), nullable=False) #new
+    ideaNum = db.Column(db.String(30), unique=False, nullable=False)
+    ideaType = db.Column(db.String(50), nullable=False)
     companyID = db.Column(db.String(10), nullable=False)
     companyName = db.Column(db.String(50), db.ForeignKey('company.companyName', ondelete='CASCADE'), nullable=False)
     company = db.relationship('Company')
-    prodID = db.Column(db.String(30), nullable=False) #name change/ prod_ID to prodID
+    prodID = db.Column(db.String(30), nullable=False)
     prodName = db.Column(db.String(100), db.ForeignKey('product.prodName'))
     prod = db.relationship('Product')
-    ideaTitle = db.Column(db.String(200), nullable=False) #name change / subject to ideaTitle
-    ideaStatus = db.Column(db.String(30), nullable=True) # new
-    effectBegin = db.Column(db.DateTime(), nullable=True) # new
-    effectEnd = db.Column(db.DateTime(), nullable=True) # new
-    priceBefore = db.Column(db.Float(), nullable=True) #new
-    priceAfter = db.Column(db.Float(), nullable=True) #new
-    estSavings = db.Column(db.Float(), nullable=True) #new
+    ideaTitle = db.Column(db.String(200), nullable=False)
+    ideaStatus = db.Column(db.String(30), nullable=True)
+    effectBegin = db.Column(db.DateTime(), nullable=True)
+    effectEnd = db.Column(db.DateTime(), nullable=True)
+    priceBefore = db.Column(db.Float(), nullable=True)
+    priceAfter = db.Column(db.Float(), nullable=True) 
+    estSavings = db.Column(db.Float(), nullable=True)
     content = db.Column(db.Text(), nullable=False)
     regDate = db.Column(db.DateTime(), nullable=False)
-    # user.id (user_ID) to user.userid
     userid = db.Column(db.String(150), nullable=False)
     userName = db.Column(db.Integer, db.ForeignKey('user.username', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('idea_set'))
@@ -61,7 +60,6 @@ class Feedback(db.Model):
     idea = db.relationship('Idea', backref=db.backref('feedback_set'))
     content = db.Column(db.Text(), nullable=False)
     regDate = db.Column(db.DateTime(), nullable=False)
-    # user.id (user_ID) to user.userid
     userid = db.Column(db.Integer, db.ForeignKey('user.userid', ondelete='CASCADE'), nullable=False) 
     user = db.relationship('User', backref=db.backref('feedback_set'))
     editDate = db.Column(db.DateTime(), nullable=True)
