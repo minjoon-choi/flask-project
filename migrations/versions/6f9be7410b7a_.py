@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: fd589ea57bf1
+Revision ID: 6f9be7410b7a
 Revises: 
-Create Date: 2020-09-07 20:45:57.192280
+Create Date: 2020-09-21 23:16:45.508468
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fd589ea57bf1'
+revision = '6f9be7410b7a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -49,28 +49,16 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('ideaNum', sa.String(length=30), nullable=False),
     sa.Column('ideaType', sa.String(length=50), nullable=False),
-    sa.Column('companyID', sa.String(length=10), nullable=False),
-    sa.Column('companyName', sa.String(length=50), nullable=False),
-    sa.Column('prodID', sa.String(length=30), nullable=False),
-    sa.Column('prodName', sa.String(length=100), nullable=True),
     sa.Column('ideaTitle', sa.String(length=200), nullable=False),
-    sa.Column('ideaStatus', sa.String(length=30), nullable=True),
-    sa.Column('effectBegin', sa.DateTime(), nullable=True),
-    sa.Column('effectEnd', sa.DateTime(), nullable=True),
     sa.Column('priceBefore', sa.Float(), nullable=True),
     sa.Column('priceAfter', sa.Float(), nullable=True),
-    sa.Column('estSavings', sa.Float(), nullable=True),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('regDate', sa.DateTime(), nullable=False),
     sa.Column('userid', sa.String(length=150), nullable=False),
     sa.Column('userName', sa.Integer(), nullable=False),
     sa.Column('editDate', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['companyName'], ['company.companyName'], name=op.f('fk_idea_companyName_company'), ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['prodName'], ['product.prodName'], name=op.f('fk_idea_prodName_product')),
     sa.ForeignKeyConstraint(['userName'], ['user.username'], name=op.f('fk_idea_userName_user'), ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_idea')),
-    sa.UniqueConstraint('ideaNum', name=op.f('uq_idea_ideaNum')),
-    sa.UniqueConstraint('userid', name=op.f('uq_idea_userid'))
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_idea'))
     )
     op.create_table('feedback',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -82,6 +70,24 @@ def upgrade():
     sa.ForeignKeyConstraint(['idea_id'], ['idea.id'], name=op.f('fk_feedback_idea_id_idea'), ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['userid'], ['user.userid'], name=op.f('fk_feedback_userid_user'), ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_feedback'))
+    )
+    op.create_table('ideaProd',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('idea_id', sa.Integer(), nullable=True),
+    sa.Column('companyID', sa.String(length=10), nullable=False),
+    sa.Column('companyName', sa.String(length=50), nullable=False),
+    sa.Column('prodID', sa.String(length=30), nullable=False),
+    sa.Column('prodName', sa.String(length=100), nullable=True),
+    sa.Column('ideaStatus', sa.String(length=30), nullable=True),
+    sa.Column('effectBegin', sa.DateTime(), nullable=True),
+    sa.Column('effectEnd', sa.DateTime(), nullable=True),
+    sa.Column('estSavings', sa.Float(), nullable=True),
+    sa.Column('agentID', sa.String(length=150), nullable=False),
+    sa.ForeignKeyConstraint(['companyName'], ['company.companyName'], name=op.f('fk_ideaProd_companyName_company'), ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['idea_id'], ['idea.id'], name=op.f('fk_ideaProd_idea_id_idea')),
+    sa.ForeignKeyConstraint(['prodName'], ['product.prodName'], name=op.f('fk_ideaProd_prodName_product')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_ideaProd')),
+    sa.UniqueConstraint('agentID', name=op.f('uq_ideaProd_agentID'))
     )
     op.create_table('idea_voter',
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -118,6 +124,7 @@ def downgrade():
     op.drop_table('feedback_voter')
     op.drop_table('comment')
     op.drop_table('idea_voter')
+    op.drop_table('ideaProd')
     op.drop_table('feedback')
     op.drop_table('idea')
     op.drop_table('user')
