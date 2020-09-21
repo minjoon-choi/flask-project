@@ -103,9 +103,9 @@ def create():
         db.session.add(new_idea)
         for prod in form.prodEntry.data:
             new_prod = IdeaProd(**prod)
-
+            #
             # Add to idea
-            new_idea.prodEntry.append(new_prod)
+            new_idea.prodEntry.append(new_prod) 
 
         for 
         # ideaNum='구매'+year+'-'+count_query_format
