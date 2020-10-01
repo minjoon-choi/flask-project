@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 6f9be7410b7a
+Revision ID: e141fe45d0ae
 Revises: 
-Create Date: 2020-09-21 23:16:45.508468
+Create Date: 2020-09-22 18:58:40.900341
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '6f9be7410b7a'
+revision = 'e141fe45d0ae'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,8 +39,9 @@ def upgrade():
     sa.Column('username', sa.String(length=150), nullable=False),
     sa.Column('password', sa.String(length=200), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
-    sa.Column('userid', sa.String(length=150), nullable=False),
+    sa.Column('usergroup', sa.String(length=30), nullable=False),
     sa.Column('userteam', sa.String(length=30), nullable=False),
+    sa.Column('userid', sa.String(length=150), nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_user')),
     sa.UniqueConstraint('email', name=op.f('uq_user_email')),
     sa.UniqueConstraint('userid', name=op.f('uq_user_userid'))
@@ -75,17 +76,13 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('idea_id', sa.Integer(), nullable=True),
     sa.Column('companyID', sa.String(length=10), nullable=False),
-    sa.Column('companyName', sa.String(length=50), nullable=False),
     sa.Column('prodID', sa.String(length=30), nullable=False),
-    sa.Column('prodName', sa.String(length=100), nullable=True),
     sa.Column('ideaStatus', sa.String(length=30), nullable=True),
     sa.Column('effectBegin', sa.DateTime(), nullable=True),
     sa.Column('effectEnd', sa.DateTime(), nullable=True),
     sa.Column('estSavings', sa.Float(), nullable=True),
     sa.Column('agentID', sa.String(length=150), nullable=False),
-    sa.ForeignKeyConstraint(['companyName'], ['company.companyName'], name=op.f('fk_ideaProd_companyName_company'), ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['idea_id'], ['idea.id'], name=op.f('fk_ideaProd_idea_id_idea')),
-    sa.ForeignKeyConstraint(['prodName'], ['product.prodName'], name=op.f('fk_ideaProd_prodName_product')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_ideaProd')),
     sa.UniqueConstraint('agentID', name=op.f('uq_ideaProd_agentID'))
     )

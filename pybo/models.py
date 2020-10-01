@@ -55,25 +55,19 @@ class IdeaProd(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     idea_id = db.Column(db.Integer, db.ForeignKey("idea.id"))
     companyID = db.Column(db.String(10), nullable=False)
-    companyName = db.Column(
-        db.String(50),
-        db.ForeignKey("company.companyName", ondelete="CASCADE"),
-        nullable=False,
-    )
-    company = db.relationship("Company")
     prodID = db.Column(db.String(30), nullable=False)
-    prodName = db.Column(db.String(100), db.ForeignKey("product.prodName"))
-    prod = db.relationship("Product")
+
     ideaStatus = db.Column(db.String(30), nullable=True)
     effectBegin = db.Column(db.DateTime(), nullable=True)
     effectEnd = db.Column(db.DateTime(), nullable=True)
     estSavings = db.Column(db.Float(), nullable=True)
-    agentID = db.Column(db.String(150), unique=True, nullable=False)
+    agentID = db.Column(db.String(150), nullable=False)
 
     # Relationship
     idea = db.relationship(
-        "Idea", backref=db.backref("prodEntry", lazy="dynamic", collection_class=list)
+        "Idea", backref=db.backref("ideaProd", lazy="dynamic", collection_class=list)
     )
+    # companyName과 prodName는 아이디어제안 detail 조회 시 join할 것
 
 
 class Idea(db.Model):

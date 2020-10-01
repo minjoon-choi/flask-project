@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='hidden.css') }}">
 <div class="container">
     <h4 class="my-3 font-weight-bold border-bottom" style="padding: 0.3rem 0">아이디어 제안 등록</h5>
-        <form method="post" class="post-form my-3">
+        <form id="idea-form" method="post" class="post-form my-3" role="form">
+            {{ form.hidden_tag() }}
             {{ form.csrf_token }}
             <!-- 오류표시 Start -->
             {% for field, errors in form.errors.items() %}
@@ -49,82 +52,165 @@
                 </div>
             </div>
             <h5 class="font-weight-bold" style="margin-top:2rem">대상품목 리스트</h5>
+            <a id="add" href="#">Add</a>
             <div class="form-group border border-gray rounded" style="padding: 10px 10px">
-                {% for prod in form.prodEntry %}
-                {{ prod.hidden_tag() }}
-                <div class="row">
-                    <div class="col-2">
-                        <p>진행현황</p>
-                    </div>
-                    <div class="col-2">
-                        <p>고객사명</p>
-                    </div>
-                    <div class="col-2">
-                        <p>계열사품목코드</p>
-                    </div>
-                    <div class="col-2">
-                        <p>적용시작월</p>
-                    </div>
-                    <div class="col-2">
-                        <p>적용종료월</p>
-                    </div>
-                    <div class="col-2">
-                        <p>예상 절감액</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <select class="form-control" name="ideaStatus" id="ideaStatus"
-                            value="{{ prod.ideaStatus.data or '' }}">
-                            <option>제안</option>
-                            <option>샘플요청</option>
-                            <option>샘플접수</option>
-                            <option>TEST 진행 중</option>
-                            <option>제안확정</option>
-                            <option>발주</option>
-                            <option>입고</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
-                        <select class="form-control" name="companyID" id="companyID"
-                            value="{{ prod.companyID.data or '' }}">
-                            <option value="PC00">파리크라상</option>
-                            <option value="SP00">에스피엘</option>
-                            <option value="SL00">에스피씨삼립</option>
-                            <option value="A100">샤니</option>
-                            <option value="B100">호남샤니</option>
-                            <option value="BR00">비알코리아</option>
-                            <option value="1000">밀다원</option>
-                            <option value="AP00">그릭슈바인</option>
-                            <option value="E100">에그팜</option>
-                            <option value="SC01">에스피씨팩</option>
-                            <option value="C100">샌드팜</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" name="prodID" id="prodID"
-                            value="{{ prod.prodID.data or '' }}">
-                    </div>
-                    <div class="col-2">
-                        <input type="month" data-date-format="YYYY-MM" class="form-control" name="effectBegin"
-                            id="effectBegin" value="{{ prod.effectBegin.data or '' }}">
-                    </div>
-                    <div class="col-2">
-                        <input type="month" data-date-format="YYYY-MM" class="form-control" name="effectEnd"
-                            id="effectEnd" value="{{ prod.effectEnd.data or '' }}">
-                    </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" name="estSavings" id="estSavings"
-                            value="{{ prod.estSavings.data or '' }}">
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <a id="add" href="#">Add Prod</a>
 
+                <div id="subforms-container">
+                    {% for subform in form.prodEntry %}
+                    <div id="prodEntry-{{ loop.index0 }}-form" class="subform" data-index="{{ loop.index0 }}">
+                        {{ subform.ideaStatus.label }}
+                        {{ subform.ideaStatus }}
+
+                        {{ subform.companyID.label }}
+                        {{ subform.companyID }}
+
+                        {{ subform.prodID.label }}
+                        {{ subform.prodID }}
+
+                        {{ subform.effectBegin.label }}
+                        {{ subform.effectBegin }}
+
+                        {{ subform.effectEnd.label }}
+                        {{ subform.effectEnd }}
+
+                        {{ subform.estSavings.label }}
+                        {{ subform.estSavings }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">저장하기</button>
         </form>
+
+        {# Form template #}
+        <div id="prodEntry-_-form" class="is-hidden" data-index="_">
+            <label for="prodEntry-_-ideaStatus">진행현황</label>
+            <input id="prodEntry-_-ideaStatus" name="prodEntry-_-ideaStatus" type="text" value="">
+
+            <label for="prodEntry-_-companyID">고객사명</label>
+            <input id="prodEntry-_-companyID" name="prodEntry-_-companyID" type="text" value="">
+
+            <label for="prodEntry-_-prodID">계열사품목코드</label>
+            <input id="prodEntry-_-prodID" name="prodEntry-_-prodID" type="text" value="">
+
+            <label for="prodEntry-_-effectBegin">적용시작월</label>
+            <input id="prodEntry-_-effectBegin" name="prodEntry-_-effectBegin" type="text" value="">
+
+            <label for="prodEntry-_-effectEnd">적용종료월</label>
+            <input id="prodEntry-_-effectEnd" name="prodEntry-_-effectEnd" type="text" value="">
+
+            <label for="prodEntry-_-estSavings">예상절감액</label>
+            <input id="prodEntry-_-estSavings" name="prodEntry-_-estSavings" type="text" value="">
+            <a class="remove" href="#">Remove</a>
+        </div>
+
+
 </div>
+
+
+{% if form.errors %}
+{{ form.errors }}
+{% endif %}
+
 {% endblock %}
+
 {% block script %}
+<script type='text/javascript'>
+    /**
+     * Adjust the indices of form fields when removing items.
+     */
+    function adjustIndices(removedIndex) {
+        var $forms = $('.subform');
+
+        $forms.each(function (i) {
+            var $form = $(this);
+            var index = parseInt($form.data('index'));
+            var newIndex = index - 1;
+
+            if (index < removedIndex) {
+                // Skip
+                return true;
+            }
+
+            // Change ID in form itself
+            $form.attr('id', $form.attr('id').replace(index, newIndex));
+            console.log('id', id)
+            $form.data('index', newIndex);
+
+            // Change IDs in form inputs
+            $form.find('input').each(function (j) {
+                var $item = $(this);
+                $item.attr('id', $item.attr('id').replace(index, newIndex));
+                $item.attr('name', $item.attr('name').replace(index, newIndex));
+            });
+        });
+    }
+
+    /**
+     * Remove a form.
+     */
+    function removeForm() {
+        var $removedForm = $(this).closest('.subform');
+        var removedIndex = parseInt($removedForm.data('index'));
+
+        $removedForm.remove();
+
+        // Update indices
+        adjustIndices(removedIndex);
+    }
+
+    /**
+     * Add a new form.
+     */
+    function addForm() {
+        var $templateForm = $('#prodEntry-_-form');
+
+        if (!$templateForm) {
+            console.log('[ERROR] Cannot find template');
+            return;
+        }
+
+        // Get Last index
+        var $lastForm = $('.subform').last();
+
+        var newIndex = 0;
+
+        if ($lastForm.length > 0) {
+            newIndex = parseInt($lastForm.data('index')) + 1;
+        }
+
+        // Maximum of 20 subforms
+        if (newIndex > 20) {
+            console.log('[WARNING] Reached maximum number of elements');
+            return;
+        }
+
+        // Add elements
+        var $newForm = $templateForm.clone();
+
+        $newForm.attr('id', $newForm.attr('id').replace('_', newIndex));
+        $newForm.data('index', newIndex);
+
+        $newForm.find('input').each(function (idx) {
+            var $item = $(this);
+
+            $item.attr('id', $item.attr('id').replace('_', newIndex));
+            $item.attr('name', $item.attr('name').replace('_', newIndex));
+        });
+
+        // Append
+        $('#subforms-container').append($newForm);
+        $newForm.addClass('subform');
+        $newForm.removeClass('is-hidden');
+
+        $newForm.find('.remove').click(removeForm);
+    }
+
+
+    $(document).ready(function () {
+        $('#add').click(addForm);
+        $('.remove').click(removeForm);
+    });
+</script>
+
 {% endblock %}

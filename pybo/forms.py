@@ -14,13 +14,15 @@ from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 
 
-class IdeaProdEntryForm(Form):
+class IdeaProdEntryForm(FlaskForm):
+    # class Meta:
+    #     csrf = False
+
     ideaStatus = StringField("진행현황", validators=[DataRequired("현재 아이디어 진행현황을 선택하세요.")])
     companyID = StringField("고객사명", validators=[DataRequired("고객사명은 필수입력 항목입니다.")])
     prodID = StringField("계열사품목코드", validators=[DataRequired("계열사품목코드는 필수입력 항목입니다.")])
     effectBegin = DateField("적용시작월", format="%Y-%m")
     effectEnd = DateField("적용종료월", format="%Y-%m")
-
     estSavings = FloatField("예상절감액")
 
 

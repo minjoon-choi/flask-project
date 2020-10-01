@@ -5,8 +5,8 @@ from sqlalchemy import func, nullslast
 from werkzeug.utils import redirect
 
 from .. import db
-from ..forms import IdeaForm, FeedbackForm
-from ..models import Idea, Feedback, User, idea_voter, Product, Company
+from ..forms import IdeaForm, FeedbackForm, IdeaProdEntryForm
+from ..models import Idea, Feedback, User, idea_voter, Product, Company, IdeaProd
 from ..views.auth_views import login_required
 
 bp = Blueprint("idea", __name__, url_prefix="/idea")
@@ -89,34 +89,37 @@ def detail(idea_id):
 def create():
     form = IdeaForm()
     if request.method == "POST" and form.validate_on_submit():
-        import time
 
-        year = str(time.strftime("%y", time.localtime()))
-        companyName_query = Company.query.filter_by(
-            companyID=form.companyID.data
-        ).first()
-        prodName_query = Product.query.filter_by(prodID=form.prodID.data).first()
-        count_query = str(db.session.query(Idea).count())
-        count_query_format = count_query.zfill(4)
+        # import time
+        # year = str(time.strftime("%y", time.localtime()))
+        # companyName_query = Company.query.filter_by(
+        #     companyID=form.companyID.data
+        # ).first()
+        # prodName_query = Product.query.filter_by(prodID=form.prodID.data).first()
+        # count_query = str(db.session.query(Idea).count())
+        # count_query_format = count_query.zfill(4)
+
+        # ideaNum='구매'+year+'-'+count_query_format
+        # regDate=datetime.now()
+        # userid=g.user.userid
+        # userName=g.user.username
+        # db.session.add(idea)
 
         new_idea = Idea()
         db.session.add(new_idea)
+
         for prod in form.prodEntry.data:
             new_prod = IdeaProd(**prod)
-            #
-            # Add to idea
-            new_idea.prodEntry.append(new_prod) 
 
-        for 
-        # ideaNum='구매'+year+'-'+count_query_format
-        # regDate=datetime.now() 
-        # userid=g.user.userid
-        # userName=g.user.username
-        
-        # db.session.add(idea)
+            # Add to idea
+            new_idea.prodEntry.append(new_prod)
         db.session.commit()
+
         return redirect(url_for("main.index"))
-    return render_template("idea/idea_form.html", form=form)
+
+    idea = Idea.query
+
+    return render_template("idea/idea_form.html", form=form, idea=idea)
 
 
 @bp.route("/modify/<int:idea_id>", methods=("GET", "POST"))
