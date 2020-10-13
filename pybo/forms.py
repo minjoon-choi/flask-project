@@ -16,8 +16,8 @@ from wtforms.validators import DataRequired, Length, EqualTo, Email
 
 
 class IdeaProdEntryForm(FlaskForm):
-    # class Meta:
-    #     csrf = False
+    class Meta:
+        csrf = False
 
     ideaStatus = SelectField(
         "진행현황",
@@ -37,8 +37,12 @@ class IdeaProdEntryForm(FlaskForm):
         validators=[DataRequired("고객사명은 필수입력 항목입니다.")],
     )
     prodID = StringField("계열사품목코드", validators=[DataRequired("계열사품목코드는 필수입력 항목입니다.")])
-    effectBegin = DateField("적용시작월", format="%Y-%m")
-    effectEnd = DateField("적용종료월", format="%Y-%m")
+    effectBegin = DateField(
+        "적용시작월", render_kw={"type": "month", "data-date-format": "YYYY-MM"}
+    )
+    effectEnd = DateField(
+        "적용종료월", render_kw={"type": "month", "data-date-format": "YYYY-MM"}
+    )
     estSavings = FloatField("예상절감액")
 
 

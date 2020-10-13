@@ -53,7 +53,7 @@ class Product(db.Model):
 class IdeaProd(db.Model):
     __tablename__ = "ideaProd"
     id = db.Column(db.Integer, primary_key=True)
-    idea_id = db.Column(db.Integer, db.ForeignKey("idea.id"))
+    ideaNum = db.Column(db.Integer, db.ForeignKey("idea.ideaNum"))
     companyID = db.Column(db.String(10), nullable=False)
     prodID = db.Column(db.String(30), nullable=False)
 

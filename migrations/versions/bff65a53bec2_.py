@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: e141fe45d0ae
+Revision ID: bff65a53bec2
 Revises: 
-Create Date: 2020-09-22 18:58:40.900341
+Create Date: 2020-10-13 21:53:53.493656
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e141fe45d0ae'
+revision = 'bff65a53bec2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -74,7 +74,7 @@ def upgrade():
     )
     op.create_table('ideaProd',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('idea_id', sa.Integer(), nullable=True),
+    sa.Column('ideaNum', sa.Integer(), nullable=True),
     sa.Column('companyID', sa.String(length=10), nullable=False),
     sa.Column('prodID', sa.String(length=30), nullable=False),
     sa.Column('ideaStatus', sa.String(length=30), nullable=True),
@@ -82,9 +82,8 @@ def upgrade():
     sa.Column('effectEnd', sa.DateTime(), nullable=True),
     sa.Column('estSavings', sa.Float(), nullable=True),
     sa.Column('agentID', sa.String(length=150), nullable=False),
-    sa.ForeignKeyConstraint(['idea_id'], ['idea.id'], name=op.f('fk_ideaProd_idea_id_idea')),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_ideaProd')),
-    sa.UniqueConstraint('agentID', name=op.f('uq_ideaProd_agentID'))
+    sa.ForeignKeyConstraint(['ideaNum'], ['idea.ideaNum'], name=op.f('fk_ideaProd_ideaNum_idea')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_ideaProd'))
     )
     op.create_table('idea_voter',
     sa.Column('user_id', sa.Integer(), nullable=False),
