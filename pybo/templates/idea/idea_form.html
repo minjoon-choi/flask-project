@@ -56,39 +56,37 @@
             <div class="form-group border border-gray rounded" style="padding: 10px 10px">
                 <!-- <a id="add" href="#">Add</a> -->
                 <div id="subforms-container">
-                    <div class="form-group">
-                        {% for subform in form.prodEntry %}
-                        {{ subform.hidden_tag() }}
-                        <div id="prodEntry-{{ loop.index0 }}-form" class="subform" data-index="{{ loop.index0 }}">
-                            <div class="row">
-                                <div class="col-2">
-                                    {{ subform.ideaStatus.label }}
-                                    {{ subform.ideaStatus(class_='form-control') }}
-                                </div>
-                                <div class="col-2">
-                                    {{ subform.companyID.label }}
-                                    {{ subform.companyID(class_='form-control') }}
-                                </div>
-                                <div class="col-2">
-                                    {{ subform.prodID.label }}
-                                    {{ subform.prodID(class_='form-control') }}
-                                </div>
-                                <div class="col-2">
-                                    {{ subform.effectBegin.label }}
-                                    {{ subform.effectBegin(class_='form-control') }}
-                                </div>
-                                <div class="col-2">
-                                    {{ subform.effectEnd.label }}
-                                    {{ subform.effectEnd(class_='form-control') }}
-                                </div>
-                                <div class="col-2">
-                                    {{ subform.estSavings.label }}
-                                    {{ subform.estSavings(class_='form-control') }}
-                                </div>
+                    {% for subform in form.prodEntry %}
+                    {{ subform.hidden_tag() }}
+                    <div id="prodEntry-{{ loop.index0 }}-form" class="subform" data-index="{{ loop.index0 }}">
+                        <div class="row mb-3">
+                            <div class="col-2">
+                                {{ subform.ideaStatus.label }}
+                                {{ subform.ideaStatus(class_='form-control') }}
+                            </div>
+                            <div class="col-2">
+                                {{ subform.companyID.label }}
+                                {{ subform.companyID(class_='form-control') }}
+                            </div>
+                            <div class="col-2">
+                                {{ subform.prodID.label }}
+                                {{ subform.prodID(class_='form-control') }}
+                            </div>
+                            <div class="col-2">
+                                {{ subform.effectBegin.label }}
+                                {{ subform.effectBegin(class_='form-control') }}
+                            </div>
+                            <div class="col-2">
+                                {{ subform.effectEnd.label }}
+                                {{ subform.effectEnd(class_='form-control') }}
+                            </div>
+                            <div class="col-2">
+                                {{ subform.estSavings.label }}
+                                {{ subform.estSavings(class_='form-control') }}
                             </div>
                         </div>
-                        {% endfor %}
                     </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="float-left">
@@ -98,7 +96,33 @@
         </form>
 
         {# Form template #}
+
+        {% for subform in form.prodEntry %}
+        {{ subform.hidden_tag() }}
         <div id="prodEntry-_-form" class="is-hidden" data-index="_">
+            <div class="row mb-3">
+                <div class="col-2">
+                    {{ subform.ideaStatus(**{"class": "form-control", "id": "prodEntry-_-ideaStatus"}) }}
+                </div>
+                <div class="col-2">
+                    {{ subform.companyID(**{"class": "form-control", "id": "prodEntry-_-companyID"}) }}
+                </div>
+                <div class="col-2">
+                    {{ subform.prodID(**{"class": "form-control", "id": "prodEntry-_-prodID"}) }}
+                </div>
+                <div class="col-2">
+                    {{ subform.effectBegin(**{"class": "form-control", "id": "prodEntry-_-effectBegin"}) }}
+                </div>
+                <div class="col-2">
+                    {{ subform.effectEnd(**{"class": "form-control", "id": "prodEntry-_-effectEnd"}) }}
+                </div>
+                <div class="col-2">
+                    {{ subform.estSavings(**{"class": "form-control", "id": "prodEntry-_-estSavings"}) }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- <div id="prodEntry-_-form" class="is-hidden" data-index="_">
             <div class="row">
                 <div class="col-2">
                     <select id="prodEntry-_-ideaStatus" class="form-control" name="prodEntry-_-ideaStatus" value="">
@@ -142,7 +166,7 @@
                 </div>
             </div>
             <a class="remove" href="#">Remove</a>
-        </div>
+        </div> -->
 </div>
 
 
